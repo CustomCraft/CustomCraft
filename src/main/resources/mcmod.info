@@ -1,0 +1,16 @@
+[
+{
+  "modid": "customcraft",
+  "name": "CustomCraft",
+  "description": "Tailor your game to suit your needs!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["DisneyPrincess"],
+  "credits": "The Forge and FML guys",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

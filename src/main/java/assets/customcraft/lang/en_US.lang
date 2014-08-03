@@ -1,0 +1,78 @@
+//Core
+tile.core.oreCopper.name=Copper Ore
+tile.core.oreTin.name=Tin Ore
+tile.core.oreBronze.name=Bronze Ore
+tile.core.oreSteel.name=Steel Ore
+
+tile.core.blockCopper.name=Block of Copper
+tile.core.blockTin.name=Block of Tin
+tile.core.blockBronze.name=Block of Bronze
+tile.core.blockSteel.name=Block of Steel
+
+item.core.ingotCopper.name=Copper Ingot
+item.core.ingotTin.name=Tin Ingot
+item.core.ingotBronze.name=Bronze Ingot
+item.core.ingotSteel.name=Steel Ingot
+
+item.core.dustCopper.name=Copper Dust
+item.core.dustTin.name=Tin Dust
+item.core.dustIron.name=Iron Dust
+item.core.dustBronze.name=Bronze Dust
+item.core.dustSteel.name=Steel Dust
+item.core.dustGold.name=Gold Dust
+item.core.dustDiamond.name=Diamond Dust
+
+//Weapons
+item.core.swordCopper.name=Copper Sword
+item.core.swordTin.name=Tin Sword
+item.core.swordBronze.name=Bronze Sword
+item.core.swordSteel.name=Steel Sword
+
+//Tools
+item.core.pickaxeCopper.name=Copper Pickaxe
+item.core.pickaxeTin.name=Tin Pickaxe
+item.core.pickaxeBronze.name=Bronze Pickaxe
+item.core.pickaxeSteel.name=Steel Pickaxe
+
+item.core.axeCopper.name=Copper Axe
+item.core.axeTin.name=Tin Axe
+item.core.axeBronze.name=Bronze Axe
+item.core.axeSteel.name=Steel Axe
+
+item.core.shovelCopper.name=Copper Shovel
+item.core.shovelTin.name=Tin Shovel
+item.core.shovelBronze.name=Bronze Shovel
+item.core.shovelSteel.name=Steel Shovel
+
+item.core.hoeCopper.name=Copper Hoe
+item.core.hoeTin.name=Tin Hoe
+item.core.hoeBronze.name=Bronze Hoe
+item.core.hoeSteel.name=Steel Hoe
+
+//Armor
+item.core.helmetCopper.name=Copper Helmet
+item.core.helmetTin.name=Tin Helmet
+item.core.helmetIron.name=Iron Helmet
+item.core.helmetBronze.name=Bronze Helmet
+item.core.helmetSteel.name=Steel Helmet
+
+item.core.plateCopper.name=Copper Chestplate
+item.core.plateTin.name=Tin Chestplate
+item.core.plateIron.name=Iron Chestplate
+item.core.plateBronze.name=Bronze Chestplate
+item.core.plateSteel.name=Steel Chestplate
+
+item.core.legsCopper.name=Copper Leggings
+item.core.legsTin.name=Tin Leggings
+item.core.legsIron.name=Iron Leggings
+item.core.legsBronze.name=Bronze Leggings
+item.core.legsSteel.name=Steel Leggings
+
+item.core.bootsCopper.name=Copper Boots
+item.core.bootsTin.name=Tin Boots
+item.core.bootsIron.name=Iron Boots
+item.core.bootsBronze.name=Bronze Boots
+item.core.bootsSteel.name=Steel Boots
+
+//Nomad
+item.nomad.clubStone.name=Stone Club
