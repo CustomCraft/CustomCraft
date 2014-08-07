@@ -1,12 +1,12 @@
 package com.disney.customcraft.handlers.network.packet;
 
-import com.disney.customcraft.handlers.LogHandler;
-import com.disney.customcraft.handlers.config.Config;
-import com.disney.customcraft.handlers.network.AbstractPacket;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
+
+import com.disney.customcraft.handlers.LogHandler;
+import com.disney.customcraft.handlers.config.Config;
+import com.disney.customcraft.handlers.network.AbstractPacket;
 
 public class PacketSettings extends AbstractPacket {
 	

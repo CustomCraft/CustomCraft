@@ -2,17 +2,15 @@ package com.disney.customcraft.plugins.vanilla;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import codechicken.nei.ItemStackSet;
 
 import com.disney.customcraft.api.RegistryNEI;
 import com.disney.customcraft.api.RegistryNEI.NEISet;
-import com.disney.customcraft.handlers.event.EventNEI;
+import com.disney.customcraft.handlers.RecipeHelper;
+import com.disney.customcraft.handlers.config.Config;
 import com.disney.customcraft.plugins.IPlugin;
 import com.disney.customcraft.plugins.nei.PluginNEI;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
 
 public class PluginVanilla implements IPlugin {
 	
@@ -29,6 +27,25 @@ public class PluginVanilla implements IPlugin {
 	@Override
 	public void post() {
 		configNEI();
+		
+		disableRecipes();
+	}
+	
+	private void disableRecipes() {
+		if(Config.nomadDisableWood) {
+			RecipeHelper.removeRecipe(new ItemStack(Items.wooden_sword));
+			RecipeHelper.removeRecipe(new ItemStack(Items.wooden_pickaxe));
+			RecipeHelper.removeRecipe(new ItemStack(Items.wooden_axe));
+			RecipeHelper.removeRecipe(new ItemStack(Items.wooden_shovel));
+			RecipeHelper.removeRecipe(new ItemStack(Items.wooden_hoe));
+		}
+		if(Config.nomadDisableStone) {
+			RecipeHelper.removeRecipe(new ItemStack(Items.stone_sword));
+			RecipeHelper.removeRecipe(new ItemStack(Items.stone_pickaxe));
+			RecipeHelper.removeRecipe(new ItemStack(Items.stone_axe));
+			RecipeHelper.removeRecipe(new ItemStack(Items.stone_shovel));
+			RecipeHelper.removeRecipe(new ItemStack(Items.stone_hoe));
+		}
 	}
 	
 	private void configNEI() {

@@ -6,8 +6,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.disney.customcraft.ModInfo;
 
-import cpw.mods.fml.common.FMLLog;
-
 public class LogHandler {
 	
 	private static Logger logger = LogManager.getLogger(ModInfo.NAME);

@@ -3,11 +3,10 @@ package com.disney.customcraft.api;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.disney.customcraft.plugins.nei.PluginNEI;
-
-import codechicken.nei.ItemStackSet;
-import cpw.mods.fml.common.Loader;
 import net.minecraft.item.ItemStack;
+import codechicken.nei.ItemStackSet;
+
+import com.disney.customcraft.plugins.nei.PluginNEI;
 
 public class RegistryNEI {
 	

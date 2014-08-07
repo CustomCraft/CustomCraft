@@ -1,16 +1,13 @@
 package com.disney.customcraft.plugins.nei;
 
-import net.minecraft.item.ItemStack;
-import codechicken.nei.ItemList;
+import codechicken.nei.ItemStackSet;
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.SubsetWidget;
-import codechicken.nei.SubsetWidget.SubsetTag;
 
+import com.disney.customcraft.CustomItems;
 import com.disney.customcraft.api.RegistryNEI;
 import com.disney.customcraft.api.RegistryNEI.NEISet;
-import com.disney.customcraft.handlers.event.EventLogin;
 import com.disney.customcraft.handlers.event.EventNEI;
-import com.disney.customcraft.modules.core.ModuleCore;
 import com.disney.customcraft.plugins.IPlugin;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -87,5 +84,43 @@ public class PluginNEI implements IPlugin {
 
 	        return true;
 	    }
+	}
+	
+	private void configVanilla() {
+		
+	}
+	
+	private void configCustomCraft() {
+		ItemStackSet items;
+		
+		items = new ItemStackSet();
+		items.with(CustomItems.oreMulti);
+		if(!items.isEmpty()) RegistryNEI.addNEISet(new NEISet("Gatherables.Materials.Ores", items));
+		items.clear();
+		
+		items = new ItemStackSet();
+		items.with(CustomItems.storageMulti);
+		if(!items.isEmpty()) RegistryNEI.addNEISet(new NEISet("Gatherables.Materials.Storage", items));
+		items.clear();
+		
+		items = new ItemStackSet();
+		items.with(CustomItems.ingotMulti);
+		if(!items.isEmpty()) RegistryNEI.addNEISet(new NEISet("Gatherables.Materials.Materials", items));
+		items.clear();
+		
+		items = new ItemStackSet();
+		items.with(CustomItems.dustMulti);
+		if(!items.isEmpty()) RegistryNEI.addNEISet(new NEISet("Gatherables.Materials.Dusts", items));
+		items.clear();
+		
+		items = new ItemStackSet();
+		items.with(CustomItems.clubStone);
+		if(!items.isEmpty()) RegistryNEI.addNEISet(new NEISet("Equipment.Weapons", items));
+		items.clear();
+		
+		items = new ItemStackSet();
+		items.with(CustomItems.clubStone);
+		if(!items.isEmpty()) RegistryNEI.addNEISet(new NEISet("Equipment.Tools", items));
+		items.clear();
 	}
 }

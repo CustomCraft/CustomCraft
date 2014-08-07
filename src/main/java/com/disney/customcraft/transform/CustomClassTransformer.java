@@ -12,7 +12,7 @@ import scala.tools.asm.MethodVisitor;
 import scala.tools.asm.tree.ClassNode;
 import scala.tools.asm.tree.MethodNode;
 
-import com.disney.customcraft.CustomCraftLoader;
+import com.disney.customcraft.CustomLoader;
 import com.disney.customcraft.CustomUtil;
 import com.disney.customcraft.handlers.LogHandler;
 
@@ -149,7 +149,7 @@ public class CustomClassTransformer implements IClassTransformer {
 			super();
 			this.api = api;
 			this.oClass = oClass;
-			this.obfuscated = CustomCraftLoader.obfuscated;
+			this.obfuscated = CustomLoader.obfuscated;
 		}
 
 		@Override

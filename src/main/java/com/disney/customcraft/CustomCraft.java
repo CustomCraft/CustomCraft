@@ -3,20 +3,24 @@ package com.disney.customcraft;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraftforge.common.MinecraftForge;
+
 import org.apache.logging.log4j.Level;
 
 import com.disney.customcraft.handlers.LogHandler;
-import com.disney.customcraft.handlers.config.Config;
 import com.disney.customcraft.handlers.config.ConfigHandler;
+import com.disney.customcraft.handlers.event.EventBucketFill;
+import com.disney.customcraft.handlers.event.EventFog;
+import com.disney.customcraft.handlers.event.EventHarvest;
+import com.disney.customcraft.handlers.event.EventLogin;
 import com.disney.customcraft.handlers.network.PacketPipeline;
 import com.disney.customcraft.handlers.proxy.CommonProxy;
-import com.disney.customcraft.modules.IModule;
-import com.disney.customcraft.modules.core.ModuleCore;
-import com.disney.customcraft.modules.nomad.ModuleNomad;
+import com.disney.customcraft.handlers.wgen.CustomGenerator;
 import com.disney.customcraft.plugins.IPlugin;
 import com.disney.customcraft.plugins.nei.PluginNEI;
 import com.disney.customcraft.plugins.vanilla.PluginVanilla;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -37,7 +41,9 @@ public class CustomCraft {
 	@SidedProxy( clientSide = ModInfo.CLIENT_PROXY, serverSide = ModInfo.COMMON_PROXY )
 	public static CommonProxy proxy;
 	
-	public static List<IModule> modules = new ArrayList<IModule>();
+	public static CustomItems customItems = new CustomItems();
+	public static CustomGenerator customGenerator = new CustomGenerator();
+	
 	public static List<IPlugin> plugins = new ArrayList<IPlugin>();
 
 	@EventHandler
@@ -46,16 +52,10 @@ public class CustomCraft {
 		LogHandler.log(Level.INFO, "Pre-Initializing");
 		
 		ConfigHandler.init(event.getModConfigurationDirectory());
-		
-		modules.add(new ModuleCore());
-		if(Config.moduleNomad) modules.add(new ModuleNomad()); else { ModuleNomad.disable(); }
-		
+				
 		plugins.add(new PluginVanilla());
 		plugins.add(new PluginNEI());
 		
-		for (IModule module : modules) {
-			module.pre();
-		}
 		for (IPlugin plugin : plugins) {
 			plugin.pre();
 		}
@@ -67,12 +67,11 @@ public class CustomCraft {
 		
 		networkHandler.initialise();
 		
-		for (IModule module : modules) {
-			module.init();
-		}
 		for (IPlugin plugin : plugins) {
 			plugin.init();
 		}
+		
+		customItems.init();
 	}
 
 	@EventHandler
@@ -81,12 +80,19 @@ public class CustomCraft {
 		
 		networkHandler.postInitialise();
 		
-		for (IModule module : modules) {
-			module.post();
-		}
 		for (IPlugin plugin : plugins) {
 			plugin.post();
 		}
+		
+		//Register events
+		FMLCommonHandler.instance().bus().register(new EventLogin());
+		MinecraftForge.EVENT_BUS.register(new EventHarvest());
+		MinecraftForge.EVENT_BUS.register(new EventBucketFill());
+		MinecraftForge.EVENT_BUS.register(new EventFog());
+		MinecraftForge.ORE_GEN_BUS.register(new CustomGenerator());
+		
+		//World Generation
+		customGenerator.init();
 		
 		LogHandler.log(Level.INFO, "CustomCraft Finished");
 	}

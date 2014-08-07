@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import net.minecraft.item.Item;
-
 public class CustomUtil {
 	
 	/**
@@ -20,7 +18,7 @@ public class CustomUtil {
 		InputStream inputStream = null;
 	    
 		try {
-			zipFile = new ZipFile(CustomCraftLoader.location);
+			zipFile = new ZipFile(CustomLoader.location);
 			ZipEntry zipEntry = zipFile.getEntry(String.format("%s.class", new Object[] { classLoc.replace('.', '/') }));
 			if(zipEntry == null) throw new IOException("Could not find file");
 
