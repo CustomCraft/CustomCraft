@@ -19,7 +19,7 @@ public class ItemHelper {
 		return name.replace("tile.", "").replace("item.", "").replace("customcraft.", "customcraft:");
 	}
 	
-	public static Block getTorchOn(BlockTorchOff torchOff) {
+	/*public static Block getTorchOn(BlockTorchOff torchOff) {
 		if(torchOff == CustomItems.torchWoodOff) {
 			return CustomItems.torchWoodOn;
 		} else if(torchOff == CustomItems.torchCoalOff) {
@@ -43,7 +43,7 @@ public class ItemHelper {
 			return CustomItems.torchOilOff;
 		}
 		return CustomItems.torchWoodOff;
-	}
+	}*/
 	
 	public static void recolorIron() {
 		Blocks.iron_block.setBlockTextureName("customcraft:" + "blockIron");

@@ -17,9 +17,9 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import com.disney.customcraft.CustomCraft;
+import com.disney.customcraft.api.RegistryTorch.TorchMaterial;
 import com.disney.customcraft.block.itemblock.ItemBlockTorchOff;
 import com.disney.customcraft.handlers.ItemHelper;
-import com.disney.customcraft.materials.TorchMaterial;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -28,13 +28,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockTorchOff extends Block {
 	
 	private TorchMaterial material;
-	private String itemName;
 		
-	public BlockTorchOff(String itemName, TorchMaterial material) {
+	public BlockTorchOff(TorchMaterial material) {
 		super(Material.wood);
 		
 		setTorchMaterial(material);
-		setBlockName("customcraft." + itemName);
+		setBlockName("customcraft." + material.getItemName());
 		setCreativeTab(CreativeTabs.tabBlock);
         
         register();

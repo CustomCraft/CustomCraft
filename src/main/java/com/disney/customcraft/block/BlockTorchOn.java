@@ -20,10 +20,11 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 import com.disney.customcraft.CustomCraft;
+import com.disney.customcraft.api.RegistryTorch;
+import com.disney.customcraft.api.RegistryTorch.TorchMaterial;
 import com.disney.customcraft.block.itemblock.ItemBlockTorchOn;
 import com.disney.customcraft.block.tile.TileTorch;
 import com.disney.customcraft.handlers.ItemHelper;
-import com.disney.customcraft.materials.TorchMaterial;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -34,11 +35,11 @@ public class BlockTorchOn extends BlockContainer {
 	private TorchMaterial material;
 	private String itemName;
 		
-	public BlockTorchOn(String itemName, TorchMaterial material) {
+	public BlockTorchOn(TorchMaterial material) {
 		super(Material.wood);
 		
 		setTorchMaterial(material);
-		setBlockName("customcraft." + itemName);
+		setBlockName("customcraft." + material.getItemName());
 		setCreativeTab(null);
         
         register();
@@ -61,7 +62,7 @@ public class BlockTorchOn extends BlockContainer {
 	
 	@Override
 	protected void dropBlockAsItem(World world, int x, int y, int z, ItemStack item) {
-		ItemStack torchOff = new ItemStack(ItemHelper.getTorchOff(this));
+		ItemStack torchOff = new ItemStack(RegistryTorch.getTorchOff(this));
 		if(torchOff != null) {
 			super.dropBlockAsItem(world, x, y, z, torchOff);
 		}

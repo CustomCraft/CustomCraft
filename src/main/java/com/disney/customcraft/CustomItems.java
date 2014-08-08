@@ -4,9 +4,12 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 
+import com.disney.customcraft.api.RegistryTorch;
+import com.disney.customcraft.api.RegistryTorch.TorchMaterial;
 import com.disney.customcraft.block.BlockCampfire;
 import com.disney.customcraft.block.BlockMultiOre;
 import com.disney.customcraft.block.BlockMultiStorage;
+import com.disney.customcraft.block.BlockMultiTable;
 import com.disney.customcraft.block.BlockOilTrail;
 import com.disney.customcraft.block.BlockTorchOff;
 import com.disney.customcraft.block.BlockTorchOn;
@@ -21,7 +24,6 @@ import com.disney.customcraft.item.part.ItemCustomSword;
 import com.disney.customcraft.item.part.PartBlade;
 import com.disney.customcraft.item.part.PartHilt;
 import com.disney.customcraft.materials.FluidMaterial;
-import com.disney.customcraft.materials.TorchMaterial;
 
 public class CustomItems {
 	
@@ -52,9 +54,16 @@ public class CustomItems {
 	public static Block torchWaxOff;
 	public static Block torchOilOff;
 	
+	public static Block bindingTable;
+	
 	public static Item customSword;
 	public static Item partBlade;
 	public static Item partHilt;
+	
+	public void pre() {
+		RegistryTorch.addTorch(TorchMaterial.WOOD);
+		RegistryTorch.addTorch(TorchMaterial.COAL);
+	}
 	
 	public void init() {
 		oreMulti = new BlockMultiOre();
@@ -71,18 +80,13 @@ public class CustomItems {
 		
 		blockCampfire = new BlockCampfire("campfire");
 		
-		torchWoodOn = new BlockTorchOn("torchWood", TorchMaterial.WOOD);
-		torchCoalOn = new BlockTorchOn("torchCoal", TorchMaterial.COAL);
-		torchWaxOn = new BlockTorchOn("torchWax", TorchMaterial.WAX);
-		torchOilOn = new BlockTorchOn("torchOil", TorchMaterial.OIL);
-		torchWoodOff = new BlockTorchOff("torchWood", TorchMaterial.WOOD);
-		torchCoalOff = new BlockTorchOff("torchCoal", TorchMaterial.COAL);
-		torchWaxOff = new BlockTorchOff("torchWax", TorchMaterial.WAX);
-		torchOilOff = new BlockTorchOff("torchOil", TorchMaterial.OIL);
+		bindingTable = new BlockMultiTable();
 		
 		customSword = new ItemCustomSword();
 		partBlade = new PartBlade();
 		partHilt = new PartHilt();
+		
+		RegistryTorch.initTorches();
 		
 		ItemHelper.recolorIron();
 	}

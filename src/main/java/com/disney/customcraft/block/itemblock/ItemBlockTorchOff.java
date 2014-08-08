@@ -11,12 +11,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
+import com.disney.customcraft.api.RegistryTorch;
 import com.disney.customcraft.block.BlockCampfire;
 import com.disney.customcraft.block.BlockOilTrail;
 import com.disney.customcraft.block.BlockTorchOff;
 import com.disney.customcraft.block.BlockTorchOn;
 import com.disney.customcraft.block.tile.TileTorch;
-import com.disney.customcraft.handlers.ItemHelper;
 
 public class ItemBlockTorchOff extends ItemBlock {
 		
@@ -31,7 +31,7 @@ public class ItemBlockTorchOff extends ItemBlock {
 		
 		if(block instanceof BlockCampfire) {
 			if(((BlockCampfire)block).isBurning(world, x, y, z)) { 
-				Block torchOn = ItemHelper.getTorchOn((BlockTorchOff)field_150939_a);
+				Block torchOn = RegistryTorch.getTorchOn((BlockTorchOff)field_150939_a);
 				if(torchOn != null) {
 		        	ItemStack itemStack = new ItemStack(torchOn);
 					NBTTagCompound tags = new NBTTagCompound();
@@ -46,7 +46,7 @@ public class ItemBlockTorchOff extends ItemBlock {
 			}
         }
 		else if(block instanceof BlockFire) {
-			Block torchOn = ItemHelper.getTorchOn((BlockTorchOff)field_150939_a);
+			Block torchOn = RegistryTorch.getTorchOn((BlockTorchOff)field_150939_a);
 			if(torchOn != null) {
 	        	ItemStack itemStack = new ItemStack(torchOn);
 				NBTTagCompound tags = new NBTTagCompound();
@@ -60,7 +60,7 @@ public class ItemBlockTorchOff extends ItemBlock {
 			}
 		}
 		else if(block instanceof BlockTorchOn) {
-			Block torchOn = ItemHelper.getTorchOn((BlockTorchOff)field_150939_a);
+			Block torchOn = RegistryTorch.getTorchOn((BlockTorchOff)field_150939_a);
 			if(torchOn != null) {
 				ItemStack itemStack = new ItemStack(torchOn);
 				NBTTagCompound tags = new NBTTagCompound();
@@ -83,7 +83,7 @@ public class ItemBlockTorchOff extends ItemBlock {
 		}
 		else if(block instanceof BlockOilTrail) {
 			if(((BlockOilTrail)block).isBurning(world, x, y, z)) { 
-				Block torchOn = ItemHelper.getTorchOn((BlockTorchOff)field_150939_a);
+				Block torchOn = RegistryTorch.getTorchOn((BlockTorchOff)field_150939_a);
 				if(torchOn != null) {
 		        	ItemStack itemStack = new ItemStack(torchOn);
 					NBTTagCompound tags = new NBTTagCompound();

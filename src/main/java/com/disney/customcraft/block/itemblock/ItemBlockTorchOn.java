@@ -1,5 +1,9 @@
 package com.disney.customcraft.block.itemblock;
 
+import java.util.List;
+
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,11 +14,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
+import com.disney.customcraft.api.RegistryTorch;
+import com.disney.customcraft.api.RegistryTorch.TorchMaterial;
 import com.disney.customcraft.block.BlockTorchOff;
 import com.disney.customcraft.block.BlockTorchOn;
 import com.disney.customcraft.block.tile.TileTorch;
-import com.disney.customcraft.handlers.ItemHelper;
-import com.disney.customcraft.materials.TorchMaterial;
 
 public class ItemBlockTorchOn extends ItemBlock {
 	
@@ -32,7 +36,7 @@ public class ItemBlockTorchOn extends ItemBlock {
 		Block block = world.getBlock(x, y, z);
 
 		if(block instanceof BlockTorchOff) {
-			world.setBlock(x, y, z, ItemHelper.getTorchOn((BlockTorchOff) block));
+			world.setBlock(x, y, z, RegistryTorch.getTorchOn((BlockTorchOff) block));
         	
         	TileTorch tile = (TileTorch)world.getTileEntity(x, y, z);
         	int dura = ((BlockTorchOff)block).getTorchMaterial().getMaxDura() - material.getMaxDura() + item.getTagCompound().getInteger("dura");
@@ -74,7 +78,7 @@ public class ItemBlockTorchOn extends ItemBlock {
     			if(entity instanceof EntityPlayer) {
     				EntityPlayer entityPlayer = (EntityPlayer) entity;
     				
-    				Block torchOff = ItemHelper.getTorchOff((BlockTorchOn) field_150939_a);
+    				Block torchOff = RegistryTorch.getTorchOff((BlockTorchOn) field_150939_a);
     				if(torchOff != null) {
 	    				ItemStack itemstack = new ItemStack(torchOff);
 	    				
@@ -101,5 +105,22 @@ public class ItemBlockTorchOn extends ItemBlock {
 		}
 		return 0;
 	} 
+	
+	@Override
+	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean advanced) {
+		String testString = "TestString\n";
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+			NBTTagCompound tags = itemStack.getTagCompound();
+			if (tags != null) {
+				int dura = tags.getInteger("dura"); 
+				int max = material.getMaxDura();
+				String d = "Durability : " + (max - dura) + "/" + max;
+				list.add(d);
+			}
+		}
+		
+		super.addInformation(itemStack, player, list, advanced);
+	}
 	
 }

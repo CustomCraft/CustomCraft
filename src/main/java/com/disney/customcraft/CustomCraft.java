@@ -7,6 +7,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.Level;
 
+import com.disney.customcraft.handlers.GuiHandler;
 import com.disney.customcraft.handlers.LogHandler;
 import com.disney.customcraft.handlers.config.ConfigHandler;
 import com.disney.customcraft.handlers.event.EventBucketFill;
@@ -28,6 +29,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 @Mod( modid = ModInfo.ID, name = ModInfo.NAME, version = ModInfo.VERSION, dependencies = "after:*;" )
 
@@ -59,6 +61,8 @@ public class CustomCraft {
 		for (IPlugin plugin : plugins) {
 			plugin.pre();
 		}
+		
+		customItems.pre();
 	}
 
 	@EventHandler
@@ -91,8 +95,11 @@ public class CustomCraft {
 		MinecraftForge.EVENT_BUS.register(new EventFog());
 		MinecraftForge.ORE_GEN_BUS.register(new CustomGenerator());
 		
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+		
 		//World Generation
 		customGenerator.init();
+		customItems.post();
 		
 		LogHandler.log(Level.INFO, "CustomCraft Finished");
 	}
