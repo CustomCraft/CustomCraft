@@ -4,7 +4,13 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 
+import com.disney.customcraft.api.IHeadPart;
+import com.disney.customcraft.api.IShaftPart;
+import com.disney.customcraft.api.ITool;
+import com.disney.customcraft.api.RegistryParts;
+import com.disney.customcraft.api.RegistryParts.ShaftMaterial;
 import com.disney.customcraft.api.RegistryTorch;
+import com.disney.customcraft.api.RegistryParts.HeadMaterial;
 import com.disney.customcraft.api.RegistryTorch.TorchMaterial;
 import com.disney.customcraft.block.BlockCampfire;
 import com.disney.customcraft.block.BlockMultiOre;
@@ -21,8 +27,11 @@ import com.disney.customcraft.item.ItemClub;
 import com.disney.customcraft.item.ItemMultiDust;
 import com.disney.customcraft.item.ItemMultiIngot;
 import com.disney.customcraft.item.part.ItemCustomSword;
-import com.disney.customcraft.item.part.PartBlade;
-import com.disney.customcraft.item.part.PartHilt;
+import com.disney.customcraft.item.part.ItemCustomTool;
+import com.disney.customcraft.item.part.ItemHead;
+import com.disney.customcraft.item.part.ItemHeadBlade;
+import com.disney.customcraft.item.part.ItemShaft;
+import com.disney.customcraft.item.part.ItemShaftStick;
 import com.disney.customcraft.materials.FluidMaterial;
 
 public class CustomItems {
@@ -56,13 +65,13 @@ public class CustomItems {
 	
 	public static Block bindingTable;
 	
-	public static Item customSword;
-	public static Item partBlade;
-	public static Item partHilt;
+	public static Item customHead;
+	public static Item customShaft;
+	public static Item customTool;
 	
 	public void pre() {
 		RegistryTorch.addTorch(TorchMaterial.WOOD);
-		RegistryTorch.addTorch(TorchMaterial.COAL);
+		RegistryTorch.addTorch(TorchMaterial.COAL);		
 	}
 	
 	public void init() {
@@ -82,9 +91,22 @@ public class CustomItems {
 		
 		bindingTable = new BlockMultiTable();
 		
-		customSword = new ItemCustomSword();
-		partBlade = new PartBlade();
-		partHilt = new PartHilt();
+		RegistryParts.addMaterialHead(HeadMaterial.COPPER);
+		RegistryParts.addMaterialHead(HeadMaterial.TIN);
+		RegistryParts.addMaterialHead(HeadMaterial.IRON);
+		RegistryParts.addMaterialShaft(ShaftMaterial.WOOD);
+		
+		IHeadPart headPart = new ItemHeadBlade();
+		IShaftPart shaftPart = new ItemShaftStick();
+		RegistryParts.addPartHead(headPart);
+		RegistryParts.addPartShaft(shaftPart);
+		
+		ITool tool = new ItemCustomSword(headPart, shaftPart);
+		RegistryParts.addTool(tool);
+		
+		customHead = new ItemHead(headPart);
+		customShaft = new ItemShaft(shaftPart);
+		customTool = new ItemCustomTool();
 		
 		RegistryTorch.initTorches();
 		

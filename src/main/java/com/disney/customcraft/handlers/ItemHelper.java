@@ -3,6 +3,9 @@ package com.disney.customcraft.handlers;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.disney.customcraft.CustomItems;

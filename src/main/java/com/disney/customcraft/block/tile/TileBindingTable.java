@@ -1,6 +1,8 @@
 package com.disney.customcraft.block.tile;
 
 import com.disney.customcraft.CustomItems;
+import com.disney.customcraft.item.part.ItemHead;
+import com.disney.customcraft.item.part.ItemShaft;
 
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -50,12 +52,12 @@ public class TileBindingTable extends TileInventory {
 	public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
 		switch(slot) {
 			case INPUTA:
-				if(itemStack.getItem() == CustomItems.partBlade) {
+				if(itemStack.getItem() instanceof ItemHead) {
 					return true;
 				}
 				return false;
 			case INPUTB:
-				if(itemStack.getItem() == CustomItems.partHilt) {
+				if(itemStack.getItem() instanceof ItemShaft) {
 					return true;
 				}
 				return false;

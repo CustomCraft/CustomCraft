@@ -1,85 +1,66 @@
 package com.disney.customcraft.item.part;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import java.util.List;
+
+import org.lwjgl.input.Keyboard;
+
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
-public class ItemCustomSword extends Item {
+import com.disney.customcraft.api.IHeadPart;
+import com.disney.customcraft.api.IShaftPart;
+import com.disney.customcraft.api.ITool;
+import com.disney.customcraft.api.RegistryParts;
+
+public class ItemCustomSword implements ITool {
+
+	private IHeadPart headPart;
+	private IShaftPart shaftPart;
 	
-	public static final String[] BLADE_NAMES = { "Copper" };
-	public static final String[] HILT_NAMES = { "Tin" };
-	
-	protected IIcon[] iconsBlade = new IIcon[BLADE_NAMES.length];
-	protected IIcon[] iconsHilt = new IIcon[HILT_NAMES.length];
-	
-	public ItemCustomSword() {
-		super();
-				
-		setUnlocalizedName("customcraft");
-		setCreativeTab(null);
-		
-		setHasSubtypes(true);
-		
-		register();
+	public ItemCustomSword(IHeadPart headPart, IShaftPart shaftPart) {
+		this.headPart = headPart;
+		this.shaftPart = shaftPart;
 	}
 	
-	private void register() {
-		GameRegistry.registerItem(this, getUnlocalizedName() + ".customSword");
+	@Override
+	public String getName() {
+		return "Sword";
 	}
 
-	@SideOnly(Side.CLIENT)
-    @Override
-    public boolean requiresMultipleRenderPasses () {
-        return true;
-    }
-	
-	@SideOnly(Side.CLIENT)
-    @Override
-    public int getRenderPasses (int metadata) {
-        return 2;
-    }
-	
 	@Override
-	public IIcon getIconFromDamage(int p_77617_1_) {
-		return null;
+	public IHeadPart getHeadPart() {
+		return headPart;
+	}
+
+	@Override
+	public IShaftPart getShaftPart() {
+		return shaftPart;
+	}
+
+	@Override
+	public boolean isValidInputs(IHeadPart headPart, IShaftPart shaftPart) {
+		return headPart instanceof ItemHeadBlade && shaftPart instanceof ItemShaftStick;
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister register) {
-		for(int i = 0; i < BLADE_NAMES.length; i++) { 
-			iconsBlade[i] = register.registerIcon("customcraft:blade" + BLADE_NAMES[i] + "Part");
-		}
-		for(int i = 0; i < HILT_NAMES.length; i++) { 
-			iconsHilt[i] = register.registerIcon("customcraft:hilt" + HILT_NAMES[i] + "Part");
-		}
-	}
-	
-	@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(ItemStack stack, int renderPass) {
-		NBTTagCompound tags = stack.getTagCompound();
-        if(tags != null) {
-        	//if(tags.hasKey("customitem")) {
-        		//tags = stack.getTagCompound().getCompoundTag("customitem");
-        		if(renderPass == 0) {
-        			if(tags.hasKey("blade")) {
-        				return iconsBlade[tags.getInteger("blade")];
-        			}
-        		} else if(renderPass == 1) {
-        			if(tags.hasKey("hilt")) {
-        				return iconsHilt[tags.getInteger("hilt")];
-        			}
-        		}
-        	//}
-        }
-        return null;
+	public void getInformation(ItemStack itemStack, EntityPlayer player, List list, boolean advanced) {
+		//if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+			NBTTagCompound tags = itemStack.getTagCompound();
+			if (tags != null) {
+				String str;
+				
+				str = "Blade Material : " + RegistryParts.MATERIALS_HEAD.get(tags.getInteger(getHeadPart().getItemName())).getName();
+				list.add(str);
+
+				str = "Hilt Material : " + RegistryParts.MATERIALS_SHAFT.get(tags.getInteger(shaftPart.getItemName())).getName();
+				list.add(str);
+
+				int max = tags.getInteger("maxdura"); 
+				str = "Durability : " + (max - tags.getInteger("dura")) + "/" + max;
+				list.add(str);
+			}
+		//}
 	}
 
 }

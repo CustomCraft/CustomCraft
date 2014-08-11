@@ -2,23 +2,29 @@ package com.disney.customcraft.item.part;
 
 import java.util.List;
 
+import com.disney.customcraft.api.IHeadPart;
+import com.disney.customcraft.api.RegistryParts;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.oredict.OreDictionary;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class PartHilt extends Item {
+public class ItemHead extends Item {
+	
+	public IHeadPart headPart;
 	
 	@SideOnly(Side.CLIENT)
-	protected IIcon[] icons = new IIcon[ItemCustomSword.HILT_NAMES.length];
+	protected IIcon[] icons = new IIcon[RegistryParts.MATERIALS_HEAD.size()];
 	
-	public PartHilt() {
+	public ItemHead(IHeadPart headPart) {
 		super();
+		
+		this.headPart = headPart;
 				
 		setUnlocalizedName("customcraft");
 		setCreativeTab(CreativeTabs.tabMaterials);
@@ -29,7 +35,7 @@ public class PartHilt extends Item {
 	}
 	
 	private void register() {
-		GameRegistry.registerItem(this, getUnlocalizedName() + ".hilt");
+		GameRegistry.registerItem(this, getUnlocalizedName() + "." + headPart.getItemName());
 	}
 	
 	@Override
@@ -39,13 +45,13 @@ public class PartHilt extends Item {
 	
 	@Override
 	public String getUnlocalizedName(ItemStack itemstack) {
-		return getUnlocalizedName() + "." + "hilt" + ItemCustomSword.HILT_NAMES[itemstack.getItemDamage()];
+		return getUnlocalizedName() + "." + headPart.getItemName() + RegistryParts.MATERIALS_HEAD.get(itemstack.getItemDamage());
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List subItems) {
-		for(int i = 0; i < ItemCustomSword.HILT_NAMES.length; i++) {
+		for(int i = 0; i < RegistryParts.MATERIALS_HEAD.size(); i++) {
 			subItems.add(new ItemStack(this, 1, i));
 		}
 	}
@@ -53,8 +59,8 @@ public class PartHilt extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister register) {
-		for(int i = 0; i < ItemCustomSword.HILT_NAMES.length; i++) { 
-			icons[i] = register.registerIcon("customcraft:" + "hilt" + ItemCustomSword.HILT_NAMES[i]);
+		for(int i = 0; i < RegistryParts.MATERIALS_HEAD.size(); i++) { 
+			icons[i] = register.registerIcon("customcraft:tool/" + headPart.getItemName() + RegistryParts.MATERIALS_HEAD.get(i));
 		}
 	}
 	
