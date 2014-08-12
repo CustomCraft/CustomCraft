@@ -1,21 +1,14 @@
 package com.disney.customcraft.api;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import com.disney.customcraft.api.RegistryNEI.NEISet;
-
-public class RegistryParts {
+public class RegistryTools {
 	
 	public static final List<HeadMaterial> MATERIALS_HEAD = new ArrayList<HeadMaterial>();
 	public static final List<ShaftMaterial> MATERIALS_SHAFT = new ArrayList<ShaftMaterial>();
 	
-	public static final List<IHeadPart> PARTS_HEAD = new ArrayList<IHeadPart>();
-	public static final List<IShaftPart> PARTS_SHAFT = new ArrayList<IShaftPart>();
-	
-	public static final List<ITool> TOOLS = new ArrayList<ITool>();
+	public static final List<IPart> PARTS = new ArrayList<IPart>();
 	
 	public static void addMaterialHead(HeadMaterial material) {
 		if(!MATERIALS_HEAD.contains(material)) {
@@ -29,24 +22,12 @@ public class RegistryParts {
 		}
 	}
 	
-	public static void addPartHead(IHeadPart headPart) {
-		if(!PARTS_HEAD.contains(headPart)) {
-			PARTS_HEAD.add(headPart);
+	public static void addToolPart(IPart part) {
+		if(!PARTS.contains(part)) {
+			PARTS.add(part);
 		}
 	}
 	
-	public static void addPartShaft(IShaftPart shaftPart) {
-		if(!PARTS_SHAFT.contains(shaftPart)) {
-			PARTS_SHAFT.add(shaftPart);
-		}
-	}
-	
-	public static void addTool(ITool tool) {
-		if(!TOOLS.contains(tool)) {
-			TOOLS.add(tool);
-		}
-	}
-
 	public enum HeadMaterial {
 		
 	    COPPER("Copper", 100),
@@ -101,5 +82,5 @@ public class RegistryParts {
 	        return dura;
 	    }
 	}
-	
+
 }

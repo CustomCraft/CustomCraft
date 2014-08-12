@@ -35,3 +35,6 @@ tile.customcraft.torchWood.name=Wooden Torch
 tile.customcraft.torchCoal.name=Coal Torch
 tile.customcraft.torchWax.name=Wax Torch
 tile.customcraft.torchOil.name=Oil Torch
+
+//Strings
+tooltip.info=Hold %s for information
