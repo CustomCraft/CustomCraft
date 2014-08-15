@@ -36,5 +36,46 @@ tile.customcraft.torchCoal.name=Coal Torch
 tile.customcraft.torchWax.name=Wax Torch
 tile.customcraft.torchOil.name=Oil Torch
 
+item.customcraft.sword.name=Sword
+item.customcraft.pickaxe.name=Pickaxe
+
+item.customcraft.stickCopper.name=Copper Stick
+item.customcraft.stickIron.name=Iron Stick
+item.customcraft.stickBronze.name=Bronze Stick
+item.customcraft.stickSteel.name=Steel Stick
+item.customcraft.stickDiamond.name=Diamond Stick
+item.customcraft.stickCobalt.name=Cobalt Stick
+item.customcraft.stickTitanium.name=Titanium Stick
+item.customcraft.stickAdamantite.name=Adamantite Stick
+item.customcraft.stickTin.name=Tin Stick
+item.customcraft.stickGold.name=Gold Stick
+item.customcraft.stickAluminium.name=Aluminium Stick
+
+item.customcraft.swordCopper.name=Copper Blade
+item.customcraft.swordIron.name=Iron Blade
+item.customcraft.swordBronze.name=Bronze Blade
+item.customcraft.swordSteel.name=Steel Blade
+item.customcraft.swordDiamond.name=Diamond Blade
+item.customcraft.swordCobalt.name=Cobalt Blade
+item.customcraft.swordTitanium.name=Titanium Blade
+item.customcraft.swordAdamantite.name=Adamantite Blade
+item.customcraft.swordTin.name=Tin Blade
+item.customcraft.swordGold.name=Gold Blade
+item.customcraft.swordAluminium.name=Aluminium Blade
+
+item.customcraft.pickaxeCopper.name=Copper Pickaxe Head
+item.customcraft.pickaxeIron.name=Iron Pickaxe Head
+item.customcraft.pickaxeBronze.name=Bronze Pickaxe Head
+item.customcraft.pickaxeSteel.name=Steel Pickaxe Head
+item.customcraft.pickaxeDiamond.name=Diamond Pickaxe Head
+item.customcraft.pickaxeCobalt.name=Cobalt Pickaxe Head
+item.customcraft.pickaxeTitanium.name=Titanium Pickaxe Head
+item.customcraft.pickaxeAdamantite.name=Adamantite Pickaxe Head
+item.customcraft.pickaxeTin.name=Tin Pickaxe Head
+item.customcraft.pickaxeGold.name=Gold Pickaxe Head
+item.customcraft.pickaxeAluminium.name=Aluminium Pickaxe Head
+
+
 //Strings
 tooltip.info=Hold %s for information
+tooltip.damage=Damage: %s

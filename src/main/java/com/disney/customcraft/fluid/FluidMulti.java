@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.disney.customcraft.block.BlockCustomFluid;
-import com.disney.customcraft.handlers.event.EventBucketFill;
+import com.disney.customcraft.event.EventBucketFill;
 import com.disney.customcraft.item.ItemCustomBucket;
 import com.disney.customcraft.materials.FluidMaterial;
 

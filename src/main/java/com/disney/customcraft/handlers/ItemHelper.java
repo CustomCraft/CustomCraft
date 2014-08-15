@@ -48,20 +48,4 @@ public class ItemHelper {
 		return CustomItems.torchWoodOff;
 	}*/
 	
-	public static void recolorIron() {
-		Blocks.iron_block.setBlockTextureName("customcraft:" + "blockIron");
-		Items.iron_ingot.setTextureName("customcraft:" + "ingotIron");
-		
-		Items.iron_sword.setTextureName("customcraft:" + "swordIron");
-		Items.iron_pickaxe.setTextureName("customcraft:" + "pickaxeIron");
-		Items.iron_axe.setTextureName("customcraft:" + "axeIron");
-		Items.iron_shovel.setTextureName("customcraft:" + "shovelIron");
-		Items.iron_hoe.setTextureName("customcraft:" + "hoeIron");
-		
-		Items.iron_helmet.setTextureName("customcraft:" + "helmetIron");
-		Items.iron_chestplate.setTextureName("customcraft:" + "chestIron");
-		Items.iron_leggings.setTextureName("customcraft:" + "legsIron");
-		Items.iron_boots.setTextureName("customcraft:" + "bootsIron");
-	}
-	
 }

@@ -11,7 +11,7 @@ public class ToolMulti {
 	
 	public ToolMulti(ITool customTool) {
 		this.customTool = customTool;
-		this.customPart = new ItemCustomPart(customTool);
+		this.customPart = new ItemMultiPart(customTool);
 		
 		RegistryTools.addToolPart(customPart);
 	}

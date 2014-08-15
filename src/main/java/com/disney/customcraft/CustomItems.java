@@ -1,8 +1,11 @@
 package com.disney.customcraft;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.disney.customcraft.api.RegistryTools;
 import com.disney.customcraft.api.RegistryTools.HeadMaterial;
@@ -22,9 +25,12 @@ import com.disney.customcraft.handlers.config.Config;
 import com.disney.customcraft.item.ItemClub;
 import com.disney.customcraft.item.ItemMultiDust;
 import com.disney.customcraft.item.ItemMultiIngot;
+import com.disney.customcraft.item.part.ItemCustomPickaxe;
+import com.disney.customcraft.item.part.ItemMultiStick;
 import com.disney.customcraft.item.part.ItemCustomSword;
 import com.disney.customcraft.item.part.ToolMulti;
 import com.disney.customcraft.materials.FluidMaterial;
+import com.disney.customcraft.testing.ItemRocket;
 
 public class CustomItems {
 	
@@ -57,7 +63,11 @@ public class CustomItems {
 	
 	//public static Block bindingTable;
 	
+	public static Item stickMulti;
 	public static ToolMulti swordMulti;
+	public static ToolMulti pickaxeMulti;
+	
+	public static Item itemRocket;
 	
 	public void pre() {
 		RegistryTorch.addTorch(TorchMaterial.WOOD);
@@ -82,15 +92,40 @@ public class CustomItems {
 		//bindingTable = new BlockMultiTable();
 		
 		RegistryTools.addMaterialHead(HeadMaterial.COPPER);
-		RegistryTools.addMaterialHead(HeadMaterial.TIN);
 		RegistryTools.addMaterialHead(HeadMaterial.IRON);
-		RegistryTools.addMaterialShaft(ShaftMaterial.WOOD);
+		RegistryTools.addMaterialHead(HeadMaterial.BRONZE);
+		RegistryTools.addMaterialHead(HeadMaterial.STEEL);
+		RegistryTools.addMaterialHead(HeadMaterial.DIAMOND);
+		RegistryTools.addMaterialHead(HeadMaterial.COBALT);
+		RegistryTools.addMaterialHead(HeadMaterial.TITANIUM);
+		RegistryTools.addMaterialHead(HeadMaterial.ADAMANTITE);
+		RegistryTools.addMaterialHead(HeadMaterial.TIN);
+		RegistryTools.addMaterialHead(HeadMaterial.GOLD);
+		RegistryTools.addMaterialHead(HeadMaterial.ALUMINIUM);
 		
+		RegistryTools.addMaterialShaft(ShaftMaterial.WOOD);
+		RegistryTools.addMaterialShaft(ShaftMaterial.COPPER);
+		RegistryTools.addMaterialShaft(ShaftMaterial.IRON);
+		RegistryTools.addMaterialShaft(ShaftMaterial.BRONZE);
+		RegistryTools.addMaterialShaft(ShaftMaterial.STEEL);
+		RegistryTools.addMaterialShaft(ShaftMaterial.DIAMOND);
+		RegistryTools.addMaterialShaft(ShaftMaterial.COBALT);
+		RegistryTools.addMaterialShaft(ShaftMaterial.TITANIUM);
+		RegistryTools.addMaterialShaft(ShaftMaterial.ADAMANTITE);
+		RegistryTools.addMaterialShaft(ShaftMaterial.TIN);
+		RegistryTools.addMaterialShaft(ShaftMaterial.GOLD);
+		RegistryTools.addMaterialShaft(ShaftMaterial.ALUMINIUM);
+		RegistryTools.addMaterialShaft(ShaftMaterial.BONE);
+		
+		OreDictionary.registerOre("bone", Items.bone);
+		
+		stickMulti = new ItemMultiStick();
 		swordMulti = new ToolMulti(new ItemCustomSword());
+		pickaxeMulti = new ToolMulti(new ItemCustomPickaxe());
+		
+		itemRocket = new ItemRocket("name");
 		
 		RegistryTorch.initTorches();
-		
-		ItemHelper.recolorIron();
 	}
 	
 	public void post() {
@@ -100,6 +135,7 @@ public class CustomItems {
 		if(Config.coreSteelCrafting) RecipeHelper.addSteelCrafting();
 		
 		swordMulti.createRecipes();
+		pickaxeMulti.createRecipes();
 	}
 
 }

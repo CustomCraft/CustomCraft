@@ -14,7 +14,7 @@ public class ClientProxy extends CommonProxy {
 	
 	private int renderIDTorch = -1;
 	private int renderIDOil = -1;
-
+	
 	@Override
 	public void registerSimpleRenderer(Block block) {
 		if(block instanceof BlockTorchOn || block instanceof BlockTorchOff) {

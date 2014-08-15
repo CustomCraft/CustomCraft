@@ -7,7 +7,7 @@ import codechicken.nei.SubsetWidget;
 import com.disney.customcraft.CustomItems;
 import com.disney.customcraft.api.RegistryNEI;
 import com.disney.customcraft.api.RegistryNEI.NEISet;
-import com.disney.customcraft.handlers.event.EventNEI;
+import com.disney.customcraft.event.EventNEI;
 import com.disney.customcraft.plugins.IPlugin;
 
 import cpw.mods.fml.common.FMLCommonHandler;

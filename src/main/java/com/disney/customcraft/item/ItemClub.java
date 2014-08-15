@@ -88,7 +88,7 @@ public class ItemClub extends ItemTool {
     /*===================================== FORGE START =================================*/
     @Override
     public int getHarvestLevel(ItemStack stack, String toolClass) {
-        if (toolClass.equals("pickaxe") || toolClass.equals("axe") || toolClass.equals("shovel")) {
+        if(toolClass.equals("pickaxe") || toolClass.equals("axe") || toolClass.equals("shovel")) {
             return this.toolMaterial.getHarvestLevel();
         }
         else {

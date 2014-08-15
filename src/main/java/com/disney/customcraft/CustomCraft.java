@@ -7,13 +7,15 @@ import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.Level;
 
+import com.disney.customcraft.event.EventAnvil;
+import com.disney.customcraft.event.EventBucketFill;
+import com.disney.customcraft.event.EventFog;
+import com.disney.customcraft.event.EventHarvest;
+import com.disney.customcraft.event.EventLogin;
+import com.disney.customcraft.event.EventTooltip;
 import com.disney.customcraft.handlers.GuiHandler;
 import com.disney.customcraft.handlers.LogHandler;
 import com.disney.customcraft.handlers.config.ConfigHandler;
-import com.disney.customcraft.handlers.event.EventBucketFill;
-import com.disney.customcraft.handlers.event.EventFog;
-import com.disney.customcraft.handlers.event.EventHarvest;
-import com.disney.customcraft.handlers.event.EventLogin;
 import com.disney.customcraft.handlers.network.PacketPipeline;
 import com.disney.customcraft.handlers.proxy.CommonProxy;
 import com.disney.customcraft.handlers.wgen.CustomGenerator;
@@ -90,6 +92,8 @@ public class CustomCraft {
 		
 		//Register events
 		FMLCommonHandler.instance().bus().register(new EventLogin());
+		MinecraftForge.EVENT_BUS.register(new EventTooltip());
+		MinecraftForge.EVENT_BUS.register(new EventAnvil());
 		MinecraftForge.EVENT_BUS.register(new EventHarvest());
 		MinecraftForge.EVENT_BUS.register(new EventBucketFill());
 		MinecraftForge.EVENT_BUS.register(new EventFog());
