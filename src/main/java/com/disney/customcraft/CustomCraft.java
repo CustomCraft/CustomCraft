@@ -3,6 +3,7 @@ package com.disney.customcraft;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.Level;
@@ -22,6 +23,7 @@ import com.disney.customcraft.handlers.wgen.CustomGenerator;
 import com.disney.customcraft.plugins.IPlugin;
 import com.disney.customcraft.plugins.nei.PluginNEI;
 import com.disney.customcraft.plugins.vanilla.PluginVanilla;
+import com.disney.customcraft.testing.TestWorldProvider;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -65,6 +67,9 @@ public class CustomCraft {
 		}
 		
 		customItems.pre();
+		
+		DimensionManager.registerProviderType(4, TestWorldProvider.class, false);
+	    DimensionManager.registerDimension(4, 4);
 	}
 
 	@EventHandler

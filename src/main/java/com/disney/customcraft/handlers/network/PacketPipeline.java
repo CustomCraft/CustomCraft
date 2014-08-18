@@ -21,6 +21,7 @@ import net.minecraft.network.NetHandlerPlayServer;
 import com.disney.customcraft.ModInfo;
 import com.disney.customcraft.handlers.LogHandler;
 import com.disney.customcraft.handlers.network.packet.PacketSettings;
+import com.disney.customcraft.testing.PacketEntity;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
@@ -122,6 +123,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
         this.channels = NetworkRegistry.INSTANCE.newChannel(ModInfo.NAME, this);
         
         registerPacket(PacketSettings.class);
+        registerPacket(PacketEntity.class);
     }
 
     // Method to call from FMLPostInitializationEvent
