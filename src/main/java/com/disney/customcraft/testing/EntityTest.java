@@ -1,21 +1,33 @@
 package com.disney.customcraft.testing;
 
+import java.util.Iterator;
 import java.util.List;
 
 import com.disney.customcraft.CustomCraft;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.S07PacketRespawn;
+import net.minecraft.network.play.server.S1DPacketEntityEffect;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.event.terraingen.BiomeEvent.GetWaterColor;
 
 public class EntityTest extends Entity {
 
@@ -33,8 +45,27 @@ public class EntityTest extends Entity {
 		
 		preventEntitySpawning = true;
 		
-		setPosition(x, y, z);
-		setSize(0.98F, 4F);
+		posX = MathHelper.floor_double(x) + 0.5;
+		posZ = MathHelper.floor_double(z) + 0.5;
+		setPosition(MathHelper.floor_double(x) + 0.5, MathHelper.floor_double(y), MathHelper.floor_double(z) + 0.5);
+		setSize(0.8F, 1.8F);
+		
+		//yOffset = this.height / 2.0F;
+	}
+	
+	@Override
+	public AxisAlignedBB getBoundingBox() {
+		return null;
+	}
+	
+	@Override
+	public AxisAlignedBB getCollisionBox(Entity p_70114_1_) {
+		return p_70114_1_.boundingBox;
+	}
+	
+	@Override
+	public boolean canBeCollidedWith() {
+		return !isDead;
 	}
 
 	@Override
@@ -51,26 +82,7 @@ public class EntityTest extends Entity {
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound p_70014_1_) {
 		// TODO Auto-generated method stub
-		
 	}
-	
-	@Override
-	public AxisAlignedBB getCollisionBox(Entity p_70114_1_)
-    {
-        return p_70114_1_.boundingBox;
-    }
-	
-	@Override
-	public AxisAlignedBB getBoundingBox()
-    {
-		return boundingBox;
-    }
-	
-	@Override
-	public boolean canBeCollidedWith()
-    {
-        return !this.isDead;
-    }
 	
 	@Override
 	public boolean interactFirst(EntityPlayer player) {
@@ -96,7 +108,7 @@ public class EntityTest extends Entity {
 	
 	public double getMountedYOffset()
     {
-        return (double)this.height * 0.0D + 1.9D;
+        return (double)this.height * 0.0D + 1.6D;
     }
 	
 	@Override
@@ -110,20 +122,24 @@ public class EntityTest extends Entity {
 		
 		boolean oldthrust;
 		
+		//check is on ground
+		
+		//moveEntity(0, -0.1, 0);
 		if (!this.worldObj.isRemote)
 		{
 			if(thrust) {
-				moveEntity(0, 0.1, 0);
+				//moveEntity(0, 0.1, 0);
+				//transferToDimension(this.riddenByEntity, worldObj.provider.dimensionId);
+				transferToDimension(this.riddenByEntity, 4);
 			} else {
-				if(!onGround) {
-					moveEntity(0, -0.1, 0);
-            	}
+				if(riddenByEntity == null) moveEntity(0, -0.8, 0);
+				else moveEntity(0, -0.1, 0);
 			}
+			//CustomCraft.networkHandler.sendToAll(new PacketEntity(getEntityId(), thrust));
 		} else {
 			oldthrust = thrust;
 			
-			if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityLivingBase)
-	        {
+			if(this.riddenByEntity != null && this.riddenByEntity instanceof EntityLivingBase) {
 	            EntityLivingBase entitylivingbase = (EntityLivingBase)this.riddenByEntity;
 	            if(entitylivingbase.moveForward > 0) {
 	            	thrust = true;
@@ -134,26 +150,38 @@ public class EntityTest extends Entity {
 	            		moveEntity(0, -0.08, 0);
 	            	}
 	            }
-	        }
+	        } else if(!onGround) {
+        		moveEntity(0, -0.78, 0);
+        	}
 			
 			if(oldthrust != thrust) {
         		CustomCraft.networkHandler.sendToServer(new PacketEntity(getEntityId(), thrust));
         	}
 		}
 		
-		//this.prevPosX = this.posX;
-        //this.prevPosY = this.posY;
-        //this.prevPosZ = this.posZ;
+		prevPosX = this.posX;
+        prevPosY = this.posY;
+        prevPosZ = this.posZ;
+	}
+	
+	@Override
+	public void updateRidden() {
+		super.updateRidden();
 	}
 	
 	public void setPosition(double p_70107_1_, double p_70107_3_, double p_70107_5_)
     {
-        this.posX = p_70107_1_;
-        this.posY = p_70107_3_;
-        this.posZ = p_70107_5_;
+		System.out.print(p_70107_1_ + "\n");
+		if(p_70107_1_ != -814) {
+			System.out.print(p_70107_1_ + "\n");
+		}
+		
+		//posX = p_70107_1_;
+        posY = p_70107_3_;
+        //posZ = p_70107_5_;
         float f = this.width / 2.0F;
         float f1 = this.height;
-        this.boundingBox.setBounds(p_70107_1_ - (double)f, p_70107_3_ - (double)this.yOffset + (double)this.ySize, p_70107_5_ - (double)f, p_70107_1_ + (double)f, p_70107_3_ - (double)this.yOffset + (double)this.ySize + (double)f1, p_70107_5_ + (double)f);
+        this.boundingBox.setBounds(posX - (double)f, p_70107_3_ - (double)this.yOffset + (double)this.ySize, p_70107_5_ - (double)f, p_70107_1_ + (double)f, p_70107_3_ - (double)this.yOffset + (double)this.ySize + (double)f1, p_70107_5_ + (double)f);
         
         updateRiderPosition();
     }
@@ -161,275 +189,109 @@ public class EntityTest extends Entity {
 	@SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(double p_70056_1_, double p_70056_3_, double p_70056_5_, float p_70056_7_, float p_70056_8_, int p_70056_9_)
     {
-        this.setPosition(p_70056_1_, p_70056_3_, p_70056_5_);
-        this.setRotation(p_70056_7_, p_70056_8_);
-        /*List list = this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox.contract(0.03125D, 0.0D, 0.03125D));
-
-        if (!list.isEmpty())
-        {
-            double d3 = 0.0D;
-
-            for (int j = 0; j < list.size(); ++j)
-            {
-                AxisAlignedBB axisalignedbb = (AxisAlignedBB)list.get(j);
-
-                if (axisalignedbb.maxY > d3)
-                {
-                    d3 = axisalignedbb.maxY;
-                }
-            }
-
-            p_70056_3_ += d3 - this.boundingBox.minY;
-            this.setPosition(p_70056_1_, p_70056_3_, p_70056_5_);
-        }*/
+		//if(riddenByEntity != null || !onGround) {
+			this.setPosition(p_70056_1_, p_70056_3_, p_70056_5_);
+		//}
     }
 	
-	public static Entity transferEntityToDimension(Entity entity, int dimensionID, WorldServer world, EntityTest rocket) {
-		if (!world.isRemote) {
-			GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()));
-			MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-			if (server != null) {
-				final WorldServer worldServer = server.worldServerForDimension(dimensionID);
-				if (worldServer == null) {
-					System.err.println("Cannot Transfer Entity to Dimension: Could not get World for Dimension " + dimensionID);
-					return null;
-				}
-				return WorldUtil.teleportEntity(var6, entity, dimensionID, type, transferInv, ridingRocket);
+	public void transferToDimension(Entity entity, int dimensionID) {
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+		if (server != null) {
+			WorldServer worldServer = server.worldServerForDimension(dimensionID);
+			if (worldServer != null && !worldServer.isRemote) {
+				teleportPlayer(worldObj, worldServer, entity, this, dimensionID);
+				thrust = false;
+				onGround = false;
 			}
 		}
-		return null;
 	}
 	
-	private static Entity teleportEntity(World worldNew, Entity entity, int dimID, EntityTest ridingRocket) {
-		if(entity.ridingEntity != null	&& entity.ridingEntity instanceof EntityTest) {
-			entity.mountEntity(entity.ridingEntity);
-		}
-		
-		boolean dimChange = entity.worldObj != worldNew;
-		entity.worldObj.updateEntityWithOptionalForce(entity, false);
-		
-		if(rockete != null) {
+	@Override
+	public void mountEntity(Entity p_70078_1_) {
+		super.mountEntity(p_70078_1_);
+	}
+	
+	public void teleportPlayer(World oldWorld, World newWorld, Entity entity, Entity rocket, int dimensionID) {
+		if (entity instanceof EntityPlayerMP && rocket instanceof EntityTest) {
+			//EntityPlayerMP player = (EntityPlayerMP) entity;
 			
+			EntityTest newRocket = transferRocket((EntityTest)rocket, dimensionID);
+			
+			transferPlayer((EntityPlayerMP)entity, dimensionID);
+			
+			entity.setPositionAndRotation(0.0, 55.0, 0.0, 0, 0);
+			newWorld.updateEntityWithOptionalForce(entity, true);
+			
+			newWorld.spawnEntityInWorld(newRocket);
+			newRocket.setWorld(newWorld);
+			newWorld.updateEntityWithOptionalForce(newRocket, true);
+			
+			entity.ridingEntity = newRocket;
+			newRocket.riddenByEntity = entity;
 		}
+	}
+	
+	public EntityTest transferRocket(EntityTest rocket, int dimension) {
+		EntityTest newRocket = null;
+		if (rocket != null) {
+			//NBTTagCompound nbt = new NBTTagCompound();
+			rocket.isDead = false;
+			rocket.riddenByEntity = null;
+			//rocket.writeToNBTOptional(nbt);
+
+			((WorldServer) rocket.worldObj).getEntityTracker().removeEntityFromAllTrackingPlayers(rocket);
+			rocket.worldObj.loadedEntityList.remove(rocket);
+			rocket.worldObj.onEntityRemoved(rocket);
+			//rocket.worldObj.removeEntity(rocket);
+
+			WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dimension);
+			newRocket = new EntityTest(world, 0.0, 55.0, 0.0);
+
+			if(newRocket != null) {
+				//rocket.setWaitForPlayer(true);
+
+				//if(ridingRocket instanceof IWorldTransferCallback) {
+				//	((IWorldTransferCallback) ridingRocket).onWorldTransferred(worldNew);
+				//}
+			}
+		}
+		return newRocket;
+	}
+	
+	public void transferPlayer(EntityPlayerMP player, int dimensionNew) {
+		MinecraftServer mcServer = MinecraftServer.getServer();
 		
-		int oldDimID = entity.worldObj.provider.dimensionId;
-		if (ridingRocket != null) {
-			NBTTagCompound nbt = new NBTTagCompound();
-			ridingRocket.isDead = false;
-			ridingRocket.riddenByEntity = null;
-			ridingRocket.writeToNBTOptional(nbt);
-			((WorldServer) ridingRocket.worldObj).getEntityTracker()
-					.removeEntityFromAllTrackingPlayers(ridingRocket);
-			ridingRocket.worldObj.loadedEntityList.remove(ridingRocket);
-			ridingRocket.worldObj.onEntityRemoved(ridingRocket);
-			ridingRocket = (EntityAutoRocket) EntityList.createEntityFromNBT(
-					nbt, worldNew);
-			if (ridingRocket != null) {
-				ridingRocket.setWaitForPlayer(true);
-				if (ridingRocket instanceof IWorldTransferCallback) {
-					((IWorldTransferCallback) ridingRocket)
-							.onWorldTransferred(worldNew);
-				}
-			}
-		}
-		if (dimChange) {
-			if (entity instanceof GCEntityPlayerMP) {
-				player = (GCEntityPlayerMP) entity;
-				World worldOld = player.worldObj;
-				if (ConfigManagerCore.enableDebug) {
-					GCLog.info("DEBUG: Attempting to remove player from old dimension "
-							+ oldDimID);
-					((WorldServer) worldOld).getPlayerManager().removePlayer(
-							player);
-					GCLog.info("DEBUG: Successfully removed player from old dimension "
-							+ oldDimID);
-				} else
-					((WorldServer) worldOld).getPlayerManager().removePlayer(
-							player);
-				player.closeScreen();
-				player.getPlayerStats().usingPlanetSelectionGui = false;
-				player.dimension = dimID;
-				if (ConfigManagerCore.enableDebug) {
-					GCLog.info("DEBUG: Sending respawn packet to player for dim "
-							+ dimID);
-				}
-				player.playerNetServerHandler.sendPacket(new S07PacketRespawn(
-						dimID, player.worldObj.difficultySetting,
-						player.worldObj.getWorldInfo().getTerrainType(),
-						player.theItemInWorldManager.getGameType()));
-				if (worldNew.provider instanceof WorldProviderOrbit) {
-					((WorldProviderOrbit) worldNew.provider)
-							.sendPacketsToClient(player);
-					if (WorldUtil.registeredSpaceStations.contains(dimID))
-					// TODO This has never been effective before due to the
-					// earlier bug - what does it actually do?
-					{
-						NBTTagCompound var2 = new NBTTagCompound();
-						SpaceStationWorldData.getStationData(worldNew, dimID,
-								player).writeToNBT(var2);
-						GalacticraftCore.packetPipeline
-								.sendTo(new PacketSimple(
-										EnumSimplePacket.C_UPDATE_SPACESTATION_DATA,
-										new Object[] { dimID, var2 }), player);
-					}
-				}
-				worldOld.playerEntities.remove(player);
-				worldOld.updateAllPlayersSleepingFlag();
-				if (player.addedToChunk
-						&& worldOld.getChunkProvider().chunkExists(
-								player.chunkCoordX, player.chunkCoordZ)) {
-					Chunk chunkOld = worldOld.getChunkFromChunkCoords(
-							player.chunkCoordX, player.chunkCoordZ);
-					chunkOld.removeEntity(player);
-					chunkOld.isModified = true;
-				}
-				worldOld.loadedEntityList.remove(player);
-				worldOld.onEntityRemoved(player);
-				worldNew.spawnEntityInWorld(entity);
-				entity.setWorld(worldNew);
-				spawnPos = type.getPlayerSpawnLocation(
-						(WorldServer) entity.worldObj, player);
-				ChunkCoordIntPair pair = worldNew.getChunkFromChunkCoords(
-						spawnPos.intX(), spawnPos.intZ())
-						.getChunkCoordIntPair();
-				if (ConfigManagerCore.enableDebug) {
-					GCLog.info("DEBUG: Loading first chunk in new dimension.");
-				}
-				((WorldServer) worldNew).theChunkProviderServer.loadChunk(
-						pair.chunkXPos, pair.chunkZPos);
-				// entity.setLocationAndAngles(spawnPos.x, spawnPos.y,
-				// spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-				worldNew.updateEntityWithOptionalForce(entity, false);
-				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z,
-						entity.rotationYaw, entity.rotationPitch);
-				player.mcServer.getConfigurationManager().func_72375_a(player,
-						(WorldServer) worldNew);
-				player.playerNetServerHandler.setPlayerLocation(spawnPos.x,
-						spawnPos.y, spawnPos.z, entity.rotationYaw,
-						entity.rotationPitch);
-				// worldNew.updateEntityWithOptionalForce(entity, false);
-				GCLog.info("Server attempting to transfer player "
-						+ player.getGameProfile().getName() + " to dimension "
-						+ worldNew.provider.dimensionId);
-				player.theItemInWorldManager.setWorld((WorldServer) worldNew);
-				player.mcServer.getConfigurationManager()
-						.updateTimeAndWeatherForPlayer(player,
-								(WorldServer) worldNew);
-				player.mcServer.getConfigurationManager().syncPlayerInventory(
-						player);
-				for (Object o : player.getActivePotionEffects()) {
-					PotionEffect var10 = (PotionEffect) o;
-					player.playerNetServerHandler
-							.sendPacket(new S1DPacketEntityEffect(player
-									.getEntityId(), var10));
-				}
-				// player.playerNetServerHandler.sendPacketToPlayer(new
-				// Packet43Experience(player.experience, player.experienceTotal,
-				// player.experienceLevel));
-			} else
-			// Non-player entity transfer i.e. it's an EntityCargoRocket
-			{
-				WorldUtil.removeEntityFromWorld(entity.worldObj, entity, true);
-				NBTTagCompound nbt = new NBTTagCompound();
-				entity.isDead = false;
-				entity.writeToNBTOptional(nbt);
-				entity.isDead = true;
-				entity = EntityList.createEntityFromNBT(nbt, worldNew);
-				if (entity == null) {
-					return null;
-				}
-				if (entity instanceof IWorldTransferCallback) {
-					((IWorldTransferCallback) entity)
-							.onWorldTransferred(worldNew);
-				}
-				worldNew.spawnEntityInWorld(entity);
-				entity.setWorld(worldNew);
-				worldNew.updateEntityWithOptionalForce(entity, false);
-			}
-		} else {
-			// Same dimension player transfer
-			if (entity instanceof GCEntityPlayerMP) {
-				player = (GCEntityPlayerMP) entity;
-				player.closeScreen();
-				player.getPlayerStats().usingPlanetSelectionGui = false;
-				worldNew.updateEntityWithOptionalForce(entity, false);
-				spawnPos = type.getPlayerSpawnLocation(
-						(WorldServer) entity.worldObj, (EntityPlayerMP) entity);
-				player.playerNetServerHandler.setPlayerLocation(spawnPos.x,
-						spawnPos.y, spawnPos.z, entity.rotationYaw,
-						entity.rotationPitch);
-				entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z,
-						entity.rotationYaw, entity.rotationPitch);
-				worldNew.updateEntityWithOptionalForce(entity, false);
-				GCLog.info("Server attempting to transfer player "
-						+ player.getGameProfile().getName()
-						+ " within same dimension "
-						+ worldNew.provider.dimensionId);
-			}
-			// Cargo rocket does not needs its location setting here, it will do
-			// that itself
-		}
-		// Update PlayerStatsGC
-		if (player != null) {
-			GCPlayerStats playerStats = player.getPlayerStats();
-			if (ridingRocket == null
-					&& type.useParachute()
-					&& playerStats.extendedInventory.getStackInSlot(4) != null
-					&& playerStats.extendedInventory.getStackInSlot(4)
-							.getItem() instanceof ItemParaChute) {
-				GCPlayerHandler.setUsingParachute(player, playerStats, true);
-			} else {
-				GCPlayerHandler.setUsingParachute(player, playerStats, false);
-			}
-			if (playerStats.rocketStacks != null
-					&& playerStats.rocketStacks.length > 0) {
-				for (int stack = 0; stack < playerStats.rocketStacks.length; stack++) {
-					if (transferInv) {
-						if (playerStats.rocketStacks[stack] == null) {
-							if (stack == playerStats.rocketStacks.length - 1) {
-								if (playerStats.rocketItem != null) {
-									playerStats.rocketStacks[stack] = new ItemStack(
-											playerStats.rocketItem, 1,
-											playerStats.rocketType);
-								}
-							} else if (stack == playerStats.rocketStacks.length - 2) {
-								playerStats.rocketStacks[stack] = playerStats.launchpadStack;
-								playerStats.launchpadStack = null;
-							}
-						}
-					} else {
-						playerStats.rocketStacks[stack] = null;
-					}
-				}
-			}
-			if (transferInv && playerStats.chestSpawnCooldown == 0) {
-				playerStats.chestSpawnVector = type.getParaChestSpawnLocation(
-						(WorldServer) entity.worldObj, player, new Random());
-				playerStats.chestSpawnCooldown = 200;
-			}
-		}
-		// If in a rocket (e.g. with launch controller) set the player to the
-		// rocket's position instead of the player's spawn position
-		if (ridingRocket != null) {
-			entity.setPositionAndRotation(ridingRocket.posX, ridingRocket.posY,
-					ridingRocket.posZ, 0, 0);
-			worldNew.updateEntityWithOptionalForce(entity, true);
-			worldNew.spawnEntityInWorld(ridingRocket);
-			ridingRocket.setWorld(worldNew);
-			worldNew.updateEntityWithOptionalForce(ridingRocket, true);
-			entity.ridingEntity = ridingRocket;
-			ridingRocket.riddenByEntity = entity;
-		} else if (spawnPos != null)
-			entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z,
-					entity.rotationYaw, entity.rotationPitch);
-		// Spawn in a lander if appropriate
-		if (entity instanceof EntityPlayerMP) {
-			FMLCommonHandler.instance().firePlayerChangedDimensionEvent(
-					(EntityPlayerMP) entity, oldDimID, dimID);
-			type.onSpaceDimensionChanged(worldNew, (EntityPlayerMP) entity,
-					ridingRocket != null);
-		}
-		return entity;
+		int dimensionOld = player.dimension;
+		WorldServer worldOld = mcServer.worldServerForDimension(dimensionOld);
+		
+		player.dimension = dimensionNew;
+		WorldServer worldNew = mcServer.worldServerForDimension(dimensionNew);
+		
+	    player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimensionNew, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+	    
+	    worldOld.removePlayerEntityDangerously(player);
+	    player.isDead = false;
+	    
+	    player.setLocationAndAngles(0.0, 50.0, 0.0, player.rotationYaw, player.rotationPitch);
+        //teleporter.placeInPortal(p_82448_1_, d3, d4, d5, f);
+	    worldNew.spawnEntityInWorld(player);
+	    worldNew.updateEntityWithOptionalForce(player, false);
+	    
+	    mcServer.getConfigurationManager().func_72375_a(player, worldOld);
+	    
+	    player.playerNetServerHandler.setPlayerLocation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
+	    
+	    player.theItemInWorldManager.setWorld(worldNew);
+	    
+	    mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, worldNew);
+	    mcServer.getConfigurationManager().syncPlayerInventory(player);
+	    
+	    Iterator iterator = player.getActivePotionEffects().iterator();
+	    while (iterator.hasNext()) {
+	        PotionEffect potioneffect = (PotionEffect)iterator.next();
+	        player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), potioneffect));
+	    }
+	    FMLCommonHandler.instance().firePlayerChangedDimensionEvent(player, dimensionOld, dimensionNew);		
 	}
 
 }

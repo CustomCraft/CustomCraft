@@ -17,7 +17,7 @@ public class RendererTest extends Render {
 	public void doRender(Entity entity, double x, double y, double z, float par8, float par9) {
 		GL11.glPushMatrix();
 
-		GL11.glTranslatef((float) x, (float) (y + 1.8F), (float) z);
+		GL11.glTranslatef((float) x, (float) (y + 1.5F), (float) z);
 		GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
 		//final float var28 = entity.rollAmplitude - par9;
 		//float var30 = entity.shipDamage - par9;
