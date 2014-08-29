@@ -50,6 +50,9 @@ public class EntityTest extends Entity {
 		setPosition(MathHelper.floor_double(x) + 0.5, MathHelper.floor_double(y), MathHelper.floor_double(z) + 0.5);
 		setSize(0.8F, 1.8F);
 		
+		onGround = false;
+		thrust = false;
+		
 		//yOffset = this.height / 2.0F;
 	}
 	
@@ -128,9 +131,17 @@ public class EntityTest extends Entity {
 		if (!this.worldObj.isRemote)
 		{
 			if(thrust) {
-				//moveEntity(0, 0.1, 0);
+				if(posY > 10.0) {
+					if(this.dimension == 4) {
+						transferToDimension(this.riddenByEntity, 0);
+					} else {
+						transferToDimension(this.riddenByEntity, 4);
+					}
+				}
+				else {
+					moveEntity(0, 0.1, 0);
+				}
 				//transferToDimension(this.riddenByEntity, worldObj.provider.dimensionId);
-				transferToDimension(this.riddenByEntity, 4);
 			} else {
 				if(riddenByEntity == null) moveEntity(0, -0.8, 0);
 				else moveEntity(0, -0.1, 0);
@@ -171,10 +182,7 @@ public class EntityTest extends Entity {
 	
 	public void setPosition(double p_70107_1_, double p_70107_3_, double p_70107_5_)
     {
-		System.out.print(p_70107_1_ + "\n");
-		if(p_70107_1_ != -814) {
-			System.out.print(p_70107_1_ + "\n");
-		}
+		System.out.print(p_70107_3_ + "\n");
 		
 		//posX = p_70107_1_;
         posY = p_70107_3_;
@@ -200,98 +208,59 @@ public class EntityTest extends Entity {
 			WorldServer worldServer = server.worldServerForDimension(dimensionID);
 			if (worldServer != null && !worldServer.isRemote) {
 				teleportPlayer(worldObj, worldServer, entity, this, dimensionID);
-				thrust = false;
-				onGround = false;
+				
 			}
 		}
-	}
-	
-	@Override
-	public void mountEntity(Entity p_70078_1_) {
-		super.mountEntity(p_70078_1_);
 	}
 	
 	public void teleportPlayer(World oldWorld, World newWorld, Entity entity, Entity rocket, int dimensionID) {
-		if (entity instanceof EntityPlayerMP && rocket instanceof EntityTest) {
-			//EntityPlayerMP player = (EntityPlayerMP) entity;
+		if(entity instanceof EntityPlayerMP) {
+			EntityPlayerMP player = ((EntityPlayerMP) entity);
 			
-			EntityTest newRocket = transferRocket((EntityTest)rocket, dimensionID);
+			((EntityPlayerMP) entity).mountEntity(null);
 			
-			transferPlayer((EntityPlayerMP)entity, dimensionID);
-			
-			entity.setPositionAndRotation(0.0, 55.0, 0.0, 0, 0);
-			newWorld.updateEntityWithOptionalForce(entity, true);
-			
-			newWorld.spawnEntityInWorld(newRocket);
-			newRocket.setWorld(newWorld);
-			newWorld.updateEntityWithOptionalForce(newRocket, true);
-			
-			entity.ridingEntity = newRocket;
-			newRocket.riddenByEntity = entity;
-		}
-	}
-	
-	public EntityTest transferRocket(EntityTest rocket, int dimension) {
-		EntityTest newRocket = null;
-		if (rocket != null) {
-			//NBTTagCompound nbt = new NBTTagCompound();
 			rocket.isDead = false;
-			rocket.riddenByEntity = null;
-			//rocket.writeToNBTOptional(nbt);
-
 			((WorldServer) rocket.worldObj).getEntityTracker().removeEntityFromAllTrackingPlayers(rocket);
 			rocket.worldObj.loadedEntityList.remove(rocket);
 			rocket.worldObj.onEntityRemoved(rocket);
+			rocket.isDead = true;
+						
+			//move the player
+			//((EntityPlayerMP) entity).travelToDimension(dimensionID);
+			teleportPlayer(((EntityPlayerMP) entity), (WorldServer) newWorld, dimensionID);
+			
+			//unmount the rocket
+			//((EntityPlayerMP) entity).mountEntity(null);
+			
+			//delete the rocket
 			//rocket.worldObj.removeEntity(rocket);
+			
+			player.capabilities.isFlying = false;
+			
+			/*EntityTest newRocket = new EntityTest(newWorld, player.posX, player.posY, player.posZ);
+			newRocket.setPosition(player.posX, player.posY, player.posZ);
+			player.ridingEntity = newRocket;
+			newRocket.riddenByEntity = player;
 
-			WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dimension);
-			newRocket = new EntityTest(world, 0.0, 55.0, 0.0);
-
-			if(newRocket != null) {
-				//rocket.setWaitForPlayer(true);
-
-				//if(ridingRocket instanceof IWorldTransferCallback) {
-				//	((IWorldTransferCallback) ridingRocket).onWorldTransferred(worldNew);
-				//}
-			}
+			newWorld.spawnEntityInWorld(newRocket);
+			newRocket.setWorld(newWorld);
+			newRocket.onGround = false;*/
+			
+			//newWorld.updateEntityWithOptionalForce(player, true);
+			//newWorld.updateEntityWithOptionalForce(newRocket, true);
+			
+			
+			
+			//player.mountEntity(newRocket);
 		}
-		return newRocket;
 	}
 	
-	public void transferPlayer(EntityPlayerMP player, int dimensionNew) {
-		MinecraftServer mcServer = MinecraftServer.getServer();
-		
-		int dimensionOld = player.dimension;
-		WorldServer worldOld = mcServer.worldServerForDimension(dimensionOld);
-		
-		player.dimension = dimensionNew;
-		WorldServer worldNew = mcServer.worldServerForDimension(dimensionNew);
-		
-	    player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimensionNew, player.worldObj.difficultySetting, player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
-	    
-	    worldOld.removePlayerEntityDangerously(player);
-	    player.isDead = false;
-	    
-	    player.setLocationAndAngles(0.0, 50.0, 0.0, player.rotationYaw, player.rotationPitch);
-        //teleporter.placeInPortal(p_82448_1_, d3, d4, d5, f);
-	    worldNew.spawnEntityInWorld(player);
-	    worldNew.updateEntityWithOptionalForce(player, false);
-	    
-	    mcServer.getConfigurationManager().func_72375_a(player, worldOld);
-	    
-	    player.playerNetServerHandler.setPlayerLocation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
-	    
-	    player.theItemInWorldManager.setWorld(worldNew);
-	    
-	    mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, worldNew);
-	    mcServer.getConfigurationManager().syncPlayerInventory(player);
-	    
-	    Iterator iterator = player.getActivePotionEffects().iterator();
-	    while (iterator.hasNext()) {
-	        PotionEffect potioneffect = (PotionEffect)iterator.next();
-	        player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), potioneffect));
-	    }
-	    FMLCommonHandler.instance().firePlayerChangedDimensionEvent(player, dimensionOld, dimensionNew);		
+	public void teleportPlayer(EntityPlayerMP player, WorldServer newWorld, int dimension) {
+		TestTeleporter teleporter = new TestTeleporter(newWorld);
+		player.mcServer.getConfigurationManager().transferPlayerToDimension(player, dimension, teleporter);
+		//player.lastExperience = -1;
+		//player.lastHealth = -1.0F;
+		//player.lastFoodLevel = -1;
 	}
 
 }

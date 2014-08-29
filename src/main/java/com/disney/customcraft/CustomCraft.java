@@ -12,6 +12,7 @@ import com.disney.customcraft.event.EventAnvil;
 import com.disney.customcraft.event.EventBucketFill;
 import com.disney.customcraft.event.EventFog;
 import com.disney.customcraft.event.EventHarvest;
+import com.disney.customcraft.event.EventLiving;
 import com.disney.customcraft.event.EventLogin;
 import com.disney.customcraft.event.EventTooltip;
 import com.disney.customcraft.handlers.GuiHandler;
@@ -97,6 +98,7 @@ public class CustomCraft {
 		
 		//Register events
 		FMLCommonHandler.instance().bus().register(new EventLogin());
+		MinecraftForge.EVENT_BUS.register(new EventLiving());
 		MinecraftForge.EVENT_BUS.register(new EventTooltip());
 		MinecraftForge.EVENT_BUS.register(new EventAnvil());
 		MinecraftForge.EVENT_BUS.register(new EventHarvest());
