@@ -98,6 +98,7 @@ public class CustomCraft {
 		
 		//Register events
 		FMLCommonHandler.instance().bus().register(new EventLogin());
+		FMLCommonHandler.instance().bus().register(new EventLiving());
 		MinecraftForge.EVENT_BUS.register(new EventLiving());
 		MinecraftForge.EVENT_BUS.register(new EventTooltip());
 		MinecraftForge.EVENT_BUS.register(new EventAnvil());
