@@ -11,10 +11,10 @@ public class EventLiving {
 	
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event) {
-		if (event.entityLiving instanceof EntityPlayerMP) {
+		/*if (event.entityLiving instanceof EntityPlayerMP) {
 			this.onPlayerUpdate((EntityPlayerMP) event.entityLiving);
 			event.entityLiving.setDead();
-		}
+		}*/
 	}
 	
 	@SubscribeEvent
@@ -28,13 +28,13 @@ public class EventLiving {
 		//event.player.motionY *= -1.8F;
 		//event.player.motionY += -0.1F;
 		//event.player.motionZ *= 0.2F;
-		if(!event.player.capabilities.isFlying) {
+		/*if(!event.player.capabilities.isFlying) {
 			event.player.motionY += 0.036F;
-		}
+		}*/
 		
-		if(event.side == Side.SERVER) {
+		//if(event.side == Side.SERVER) {
 			//System.out.println(event.player.motionY);
-		}
+		//}
 	}
 	
 	private void onPlayerUpdate(EntityPlayerMP player) {

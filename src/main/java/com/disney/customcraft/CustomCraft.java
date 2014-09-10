@@ -3,6 +3,8 @@ package com.disney.customcraft;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -24,6 +26,7 @@ import com.disney.customcraft.handlers.wgen.CustomGenerator;
 import com.disney.customcraft.plugins.IPlugin;
 import com.disney.customcraft.plugins.nei.PluginNEI;
 import com.disney.customcraft.plugins.vanilla.PluginVanilla;
+import com.disney.customcraft.testing.BiomeGenTutorial;
 import com.disney.customcraft.testing.TestWorldProvider;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -52,7 +55,11 @@ public class CustomCraft {
 	public static CustomGenerator customGenerator = new CustomGenerator();
 	
 	public static List<IPlugin> plugins = new ArrayList<IPlugin>();
-
+	
+	public static final BiomeGenBase TutorialBiome = new BiomeGenTutorial(50);
+	
+	public static final boolean useTE = true;
+	
 	@EventHandler
 	public static void preInit( FMLPreInitializationEvent event ) {
 		LogHandler.init(event.getModLog());		
@@ -68,9 +75,6 @@ public class CustomCraft {
 		}
 		
 		customItems.pre();
-		
-		DimensionManager.registerProviderType(4, TestWorldProvider.class, false);
-	    DimensionManager.registerDimension(4, 4);
 	}
 
 	@EventHandler
@@ -84,6 +88,9 @@ public class CustomCraft {
 		}
 		
 		customItems.init();
+		
+		DimensionManager.registerProviderType(4, TestWorldProvider.class, true);
+	    DimensionManager.registerDimension(4, 4);
 	}
 
 	@EventHandler

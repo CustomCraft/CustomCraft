@@ -5,7 +5,17 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import net.minecraft.world.World;
+
 public class CustomUtil {
+	
+	public static boolean isClientSide(World world) {
+		return world.isRemote;
+	}
+	
+	public static boolean isServerSide(World world) {
+		return !world.isRemote;
+	}
 	
 	/**
 	 * Attempts to open a jar file to read a class from inside it.

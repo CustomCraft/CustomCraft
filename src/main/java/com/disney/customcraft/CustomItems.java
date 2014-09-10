@@ -30,7 +30,10 @@ import com.disney.customcraft.item.part.ItemMultiStick;
 import com.disney.customcraft.item.part.ItemCustomSword;
 import com.disney.customcraft.item.part.ToolMulti;
 import com.disney.customcraft.materials.FluidMaterial;
+import com.disney.customcraft.testcasting.BlockCastingTable;
+import com.disney.customcraft.testcasting.ItemPattern;
 import com.disney.customcraft.testing.ItemRocket;
+import com.disney.customcraft.testingMachine.BlockElectricAbstract;
 
 public class CustomItems {
 	
@@ -68,6 +71,11 @@ public class CustomItems {
 	public static ToolMulti pickaxeMulti;
 	
 	public static Item itemRocket;
+	
+	public static Block blockCastingTable;
+	public static Item pattern;
+	
+	public static Block blockElectric;
 	
 	public void pre() {
 		RegistryTorch.addTorch(TorchMaterial.WOOD);
@@ -124,6 +132,11 @@ public class CustomItems {
 		pickaxeMulti = new ToolMulti(new ItemCustomPickaxe());
 		
 		itemRocket = new ItemRocket("name");
+		
+		blockCastingTable = new BlockCastingTable("castingTable");
+		pattern = new ItemPattern("pattern");
+		
+		blockElectric = new BlockElectricAbstract();
 		
 		RegistryTorch.initTorches();
 	}
